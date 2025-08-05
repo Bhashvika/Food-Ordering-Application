@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Menu Item</title>
+    <style>
+    
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f8;
+            margin: 0;
+            padding: 0;
+        }
+     .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #333;
+      height: 100px;
+      padding: 0 20px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #fff;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .brand-text .title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .brand-text .subtitle {
+      font-size: 12px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 8px 12px;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links a:hover {
+      background-color: #ddd;
+      color: black;
+      border-radius: 4px;
+    }
+        
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 25px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+            color: #444;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: 0.2s border ease-in-out;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+ <div class="navbar">
+    <div class="logo-container">
+      <img src="logo.png" alt="Flavour Fly Logo" class="logo-img" />
+      <div class="brand-text">
+        <span class="title">Flavour Fly</span>
+        <span class="subtitle">Taste Of Andhra</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="addrestaurant.html">Add Restaurant</a>
+      <a href="AdminRestaurantlist.html">Restaurant List</a>
+      <a href="allOrders.html">All Orders</a>
+      <a href="signin.html">Logout</a>
+    </div>
+  </div>
+    <h1>Add Menu Item for a Restaurant</h1>
+    <form action="addMenuServlet" method="post" enctype="multipart/form-data">
+
+        <label for="restaurantIdInput">Restaurant ID:</label>
+        <input type="number" name="restaurantId" id="restaurantIdInput" value="${restaurantId}" required>
+
+        <label for="itemName">Item Name:</label>
+        <input type="text" name="itemName" id="itemName" required>
+
+        <label for="description">Description:</label>
+        <textarea name="description" id="description" rows="3" required></textarea>
+
+        <label for="price">Price:</label>
+        <input type="number" name="price" id="price" step="0.01" required>
+
+        <label for="isAvailable">Is Available:</label>
+        <select name="isAvailable" id="isAvailable" required>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+
+        <label for="ratings">Ratings (1-5):</label>
+        <input type="number" name="ratings" id="ratings" min="1" max="5" required>
+
+        <label for="imageFile">Item Image:</label>
+        <input type="file" name="imageFile" id="imageFile" accept="image/*" required>
+
+        <button type="submit">Add Menu Item</button>
+    </form>
+
+    <script>
+        // Extract restaurantId from query params
+        const urlParams = new URLSearchParams(window.location.search);
+        const restaurantId = urlParams.get('restaurantId');
+
+        // Pre-fill the restaurantId field
+        if (restaurantId) {
+            document.addEventListener('DOMContentLoaded', () => {
+                const input = document.getElementById('restaurantIdInput');
+                input.value = restaurantId;
+                input.readOnly = true; // optional
+            });
+        }
+    </script>
+</body>
+</html>

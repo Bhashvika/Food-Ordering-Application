@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .checkout-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 350px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: bold;
+        }
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        .payment-options {
+            margin-top: 10px;
+        }
+        .payment-options label {
+            font-weight: normal;
+            margin-right: 10px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        input[type="submit"]:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <h2>Checkout</h2>
+        <form action="ConfirmOrderServlet" method="post">
+            <label for="address">Delivery Address:</label>
+            <textarea name="address" id="address" rows="3" required></textarea>
+
+            <label>Payment Mode:</label>
+            <div class="payment-options">
+                <input type="radio" id="cod" name="paymentMode" value="COD" required>
+                <label for="cod">Cash on Delivery</label><br>
+
+                <input type="radio" id="online" name="paymentMode" value="Online" required>
+                <label for="online">Online Payment</label>
+            </div>
+
+            <input type="submit" value="Confirm Order">
+        </form>
+    </div>
+</body>
+</html>

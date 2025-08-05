@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #333;
+      height: 100px;
+      padding: 0 20px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #fff;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .brand-text .title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .brand-text .subtitle {
+      font-size: 12px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 8px 12px;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links a:hover {
+      background-color: #ddd;
+      color: black;
+      border-radius: 4px;
+    }
+
+    .home {
+      padding: 0;
+      margin: 0;
+    }
+
+    .hero-section {
+      position: relative;
+      width: 100vw;
+      overflow: hidden;
+    }
+
+    .hero-section img {
+      width: 100vw;
+      height: auto;
+      display: block;
+    }
+
+    .hero-text {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-align: center;
+      text-shadow: 1px 1px 5px black;
+     
+      padding: 20px 30px;
+      border-radius: 10px;
+      font-size:30px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-text h1 {
+        font-size: 24px;
+      }
+
+      .hero-text p {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="logo-container">
+      <img src="logo.png" alt="Flavour Fly Logo" class="logo-img" />
+      <div class="brand-text">
+        <span class="title">Flavour Fly</span>
+        <span class="subtitle">Taste Of Andhra</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="addrestaurant.html">Add Restaurant</a>
+      <a href="AdminRestaurantlist.html">Restaurant List</a>
+      <a href="allOrders.html">All Orders</a>
+      <a href="signin.html">Logout</a>
+    </div>
+  </div>
+
+  <div class="home">
+    <div class="hero-section">
+      <img src="https://www.helpguide.org/wp-content/uploads/2023/02/Diabetes-Diet-e1677632226182.jpeg" alt="Admin Dashboard" />
+      <div class="hero-text">
+        <h1>Welcome Admin</h1>
+        <p>Manage your platform easily from here.</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
