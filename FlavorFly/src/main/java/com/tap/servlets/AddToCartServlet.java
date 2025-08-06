@@ -1,45 +1,59 @@
 package com.tap.servlets;
+
+import com.tap.models.CartModel;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import com.tap.models.CartModel;
-
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/addToCart")
 public class AddToCartServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session = req.getSession();
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-        int menuId = Integer.parseInt(req.getParameter("menuId"));
+        // Validate and parse input parameters
+        String menuIdParam = req.getParameter("menuId");
         String itemName = req.getParameter("itemName");
-        double price = Double.parseDouble(req.getParameter("price"));
+        String quantityParam = req.getParameter("quantity");
+        String priceParam = req.getParameter("price");
 
-        List<CartModel> cart = (List<CartModel>) session.getAttribute("cart");
+        if (menuIdParam == null || itemName == null || quantityParam == null || priceParam == null) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters.");
+            return;
+        }
+
+        int menuId;
+        int quantity;
+        double price;
+
+        try {
+            menuId = Integer.parseInt(menuIdParam);
+            quantity = Integer.parseInt(quantityParam);
+            price = Double.parseDouble(priceParam);
+        } catch (NumberFormatException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid number format.");
+            return;
+        }
+
+        // Create a CartModel object with provided data
+        CartModel item = new CartModel(menuId, itemName, quantity, price);
+
+        // Get or create the cart stored in session
+        HttpSession session = req.getSession(true);
+        List<CartModel> cart = (List<CartModel>) session.getAttribute("cartItems");
         if (cart == null) {
             cart = new ArrayList<>();
         }
 
-        boolean found = false;
-        for (CartModel item : cart) {
-            if (item.getMenuId() == menuId) {
-                item.setQuantity(item.getQuantity() + 1);
-                found = true;
-                break;
-            }
-        }
+        // Add new item to the cart
+        cart.add(item);
+        session.setAttribute("cartItems", cart);
 
-        if (!found) {
-            cart.add(new CartModel(menuId, itemName, 1, price));
-        }
-
-        session.setAttribute("cart", cart);
-        resp.getWriter().write("Item added to cart");
-        System.out.println("AddToCart Session ID: " + session.getId());
-
+        // Redirect to cart page or confirmation page
+        resp.sendRedirect(req.getContextPath() + "/cart.html");
     }
 }

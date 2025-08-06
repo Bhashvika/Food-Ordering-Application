@@ -22,14 +22,39 @@ public class ConfirmOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        List<CartModel> cart = (List<CartModel>) session.getAttribute("cart");
+        // 1. Get restaurantId from the POST request (most reliable)
+        String restaurantIdParam = req.getParameter("restaurantId");
+        
+        Integer restaurantIdObj = null;
+
+        if (restaurantIdParam != null && !restaurantIdParam.isEmpty()) {
+            try {
+            	System.out.println("Received restaurantIdParam: " + restaurantIdParam);
+
+                restaurantIdObj = Integer.parseInt(restaurantIdParam);
+            } catch (NumberFormatException e) {
+                resp.getWriter().println("Invalid restaurant ID format.");
+                return;
+            }
+        } else {
+            restaurantIdObj = (Integer) session.getAttribute("restaurantId");
+        }
+        if (restaurantIdObj == null) {
+            resp.getWriter().println("Session expired or restaurant not selected. Please go back and try again.");
+            return;
+        }
+
+        int restaurantId = restaurantIdObj;
+
+        // Get other session attributes
+        List<CartModel> cart = (List<CartModel>) session.getAttribute("cartItems");
+        Integer userIdObj = (Integer) session.getAttribute("userId");
+        
+        // Now check if any of the required values are missing
         if (cart == null || cart.isEmpty()) {
             resp.getWriter().println("Your cart is empty. Please add items before confirming the order.");
             return;
         }
-
-        Integer userIdObj = (Integer) session.getAttribute("userId");
-        Integer restaurantIdObj = (Integer) session.getAttribute("restaurantId");
 
         if (userIdObj == null || restaurantIdObj == null) {
             resp.getWriter().println("Session expired or invalid. Please login and try again.");
@@ -37,8 +62,8 @@ public class ConfirmOrderServlet extends HttpServlet {
         }
 
         int userId = userIdObj;
-        int restaurantId = restaurantIdObj;
 
+ 
         String address = req.getParameter("address");
         String paymentMode = req.getParameter("paymentMode");
 
@@ -66,7 +91,7 @@ public class ConfirmOrderServlet extends HttpServlet {
                 orderItemDao.insertOrderItem(orderItem);
             }
 
-            session.removeAttribute("cart");
+            session.removeAttribute("cartItems");
             session.setAttribute("recentOrderId", orderId);
 
             resp.sendRedirect("orderconfirmation.html");
@@ -74,6 +99,5 @@ public class ConfirmOrderServlet extends HttpServlet {
             resp.getWriter().println("Failed to place the order. Please try again.");
         }
         System.out.println("ConfirmOrder Session ID: " + session.getId());
-
     }
 }

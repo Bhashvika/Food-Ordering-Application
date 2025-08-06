@@ -16,12 +16,25 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/api/menu")
 public class MenuServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int restaurantId = Integer.parseInt(req.getParameter("restaurantId"));
-        HttpSession session = req.getSession();
-        session.setAttribute("restaurantId", restaurantId);
-        MenuDaoImpl mdi=new MenuDaoImpl();
-        List<Menu> items = mdi.getMenusByRestaurantId(restaurantId);
+        String restaurantIdParam = req.getParameter("restaurantId");
         
+        if (restaurantIdParam == null || restaurantIdParam.isEmpty()) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameter: restaurantId");
+            return;
+        }
+
+        int restaurantId = Integer.parseInt(restaurantIdParam);
+        HttpSession session = req.getSession();
+        
+        // This line correctly stores the ID in the session
+        session.setAttribute("restaurantId", restaurantId);
+
+        // --- DEBUGGING: Print to the console to confirm the value is set ---
+        System.out.println("MenuServlet: Stored restaurantId " + restaurantId + " in session with ID " + session.getId());
+        
+        MenuDaoImpl mdi = new MenuDaoImpl();
+        List<Menu> items = mdi.getMenusByRestaurantId(restaurantId);
+
         resp.setContentType("application/json");
         new Gson().toJson(items, resp.getWriter());
     }

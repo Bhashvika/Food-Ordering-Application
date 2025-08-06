@@ -114,8 +114,8 @@ List<Order> orderHistory = (List<Order>) request.getAttribute("orderHistory");
     </div>
     <div class="nav-links">
      <a href="UserDashboard.html">Home</a>
-      <a href="restaurant.html">Restaurants</a>
-      <a href="cart.html">Cart</a>
+      <a href="restaurant.jsp">Restaurants</a>
+      <a href="cart.jsp">Cart</a>
       <a href="orderHistory.jsp">Order History</a>
       <a href="signin.html">Logout</a>
     </div>

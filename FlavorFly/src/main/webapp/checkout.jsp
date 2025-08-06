@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,7 +65,21 @@
     <div class="checkout-container">
         <h2>Checkout</h2>
         <form action="ConfirmOrderServlet" method="post">
-        
+            
+            <!-- ✅ Safely insert restaurantId from session -->
+            <%
+                Object ridObj = session.getAttribute("restaurantId");
+                if (ridObj != null) {
+            %>
+                <input type="hidden" name="restaurantId" value="<%= ridObj %>">
+            <%
+                } else {
+            %>
+                <p style="color: red;">Restaurant ID not found in session!</p>
+            <%
+                }
+            %>
+
             <label for="address">Delivery Address:</label>
             <textarea name="address" id="address" rows="3" required></textarea>
 
